@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StickX Bypass</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .embed {
+            border-radius: 5px;
+            background-color: #36393f;
+            color: #ffffff;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .embed-title {
+            font-weight: bold;
+            color: #7289da;
+        }
+        .embed-description {
+            color: #ffffff;
+        }
+        .embed-error {
+            color: #ff0000;
+        }
+    </style>
+    <script>
+        function displayEmbed(data) {
+            var embed = document.createElement("div");
+            embed.className = "embed";
+            
+            var title = document.createElement("div");
+            title.className = "embed-title";
+            title.innerText = "Bypass Result:";
+            embed.appendChild(title);
+            
+            var description = document.createElement("div");
+            description.className = "embed-description";
+            description.innerText = data.message;
+            embed.appendChild(description);
+            
+            document.getElementById("embedResult").appendChild(embed);
+        }
+
+        function bypass() {
+            var api = document.getElementById("bypassSelect").value;
+            var apiKey = document.getElementById("api_key").value;
+            var param = document.getElementById("param").value;
+            var value = document.getElementById("value").value;
+            
+            var url = api.replace("{" + param + "}", value).replace("{api_key}", apiKey);
+            
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.key) {
+                    displayEmbed({ message: "Bypass successful. Your key is: " + data.key });
+                } else {
+                    displayEmbed({ message: "Bypass failed." });
+                }
+                document.getElementById("resetBtn").style.display = "block";
+            })
+            .catch(error => {
+                displayEmbed({ message: "Error: " + error });
+                document.getElementById("resetBtn").style.display = "block";
+            });
+        }
+
+        function resetResult() {
+            document.getElementById("embedResult").innerHTML = "";
+            document.getElementById("resetBtn").style.display = "none";
+        }
+    </script>
+</head>
+<body>
+    <h1>StickX Bypass</h1>
+    <p>Your API Key Is: <a href="https://stickx.top/api-key">https://stickx.top/api-key</a></p>
+    <label for="api_key">API Key:</label>
+    <input type="text" id="api_key" name="api_key" required><br><br>
+    <label for="bypassSelect">Select Bypass:</label>
+    <select id="bypassSelect" name="bypassSelect">
+        <option value="https://stickx.top/api-arceusx/?hwid={hwid}&api_key={api_key}">Arceus</option>
+        <option value="https://stickx.top/api-codex/?token={token}&api_key={api_key}">Codex</option>
+        <option value="https://stickx.top/api-hydrogen/?hwid={hwid}&api_key={api_key}">Hydrogen</option>
+        <option value="https://stickx.top/api-hohohubv/?hwid={hwid}&api_key={api_key}">Hohohubv</option>
+        <option value="https://stickx.top/api-trigon/?hwid={hwid}&api_key={api_key}">Trigonevo</option>
+        <option value="https://stickx.top/api-delta/?hwid={hwid}&api_key={api_key}">Delta</option>
+        <option value="https://stickx.top/api-vegax/?hwid={hwid}&api_key={api_key}">VegaX</option>
+    </select><br><br>
+    <label for="param">URL Parameter:</label>
+    <select id="param" name="param">
+        <option value="hwid">HWID</option>
+        <option value="id">ID</option>
+        <option value="token">Token</option>
+    </select><br><br>
+    <label for="value">Parameter Value:</label>
+    <input type="text" id="value" name="value" required><br><br>
+
+    <button onclick="bypass()">Bypass</button><br><br>
+
+    <div id="embedResult"></div>
+    <button id="resetBtn" style="display: none;" onclick="resetResult()">Reset</button>
+
+    <hr>
+
+    <h2>Join our Discord Stick X</h2>
+    <button class="discord-btn" onclick="window.open('https://discord.com/invite/YtzSKHWM', '_blank')">Join our Discord</button>
+</body>
+  </html>
